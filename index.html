@@ -383,12 +383,12 @@ const CAT0 = {
 };
 const CHG0 = ['Loyer','Assurance voiture','Carburant','Spotify','Ciné','Basic-Fit','Forfait téléphone','iCloud + apple care ipad','Transport','streaming','Revolut premium','ChatGPT plus','Claude premium','carte LCL'];
 const INV0 = ['ETF','\u00c9pargne','Aide famille','Cr\u00e9dit'];
-
+ 
 let ST = {y:2026, m:'Mars', tab:'budget', chgView:'list'};
 let D = {};
 let gTok = null, saveTimer = null, barChart = null;
 let lineCtx = {}, delCtx = {}, goalCtx = {}, limCtx = {};
-
+ 
 // ═══════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════
@@ -406,7 +406,7 @@ function prevM(y,m){ const i=MKEY.indexOf(m); return i>0?{y,m:MKEY[i-1]}:{y:y-1,
 function mfr(m){ return MFR[MKEY.indexOf(m)]||m; }
 function toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200); }
 function setSt(s){ const dot=document.getElementById('sdot'),txt=document.getElementById('syncTxt'); dot.className='sdot'+(s==='ok'?' ok':s==='sp'?' sp':''); txt.textContent=s==='ok'?'Drive sync':s==='sp'?'Sync...':'Local'; }
-
+ 
 // ═══════════════════════════════════════
 // DATA INIT
 // ═══════════════════════════════════════
@@ -437,7 +437,7 @@ function initData(){
   d25.rev=[{l:'VIAVI Solutions',a:1814.63,n:''},{l:'CROUS',a:636,n:''},{l:'Ticket Restaurant',a:0,n:''}];
   d25.inv=[{l:'ETF',a:0,n:''},{l:'Épargne',a:0,n:''},{l:'Aide famille',a:0,n:''},{l:'Crédit',a:420,n:''}];
 }
-
+ 
 // ═══════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════
@@ -457,13 +457,13 @@ function loadLocal(){
   return false;
 }
 function scheduleSave(){ clearTimeout(saveTimer); saveTimer=setTimeout(()=>{saveLocal();driveWrite();},1500); }
-
+ 
 // ═══════════════════════════════════════
 // DARK MODE
 // ═══════════════════════════════════════
 function applyDark(){ const d=D.settings?.dark||'auto'; const el=document.documentElement; if(d==='dark') el.setAttribute('data-dark','1'); else if(d==='light') el.setAttribute('data-dark','0'); else el.removeAttribute('data-dark'); }
 function toggleDark(){ const c=D.settings.dark||'auto'; D.settings.dark=c==='auto'?'dark':c==='dark'?'light':'auto'; applyDark(); scheduleSave(); toast(D.settings.dark==='auto'?'Theme auto':D.settings.dark==='dark'?'Mode sombre':'Mode clair'); }
-
+ 
 // ═══════════════════════════════════════
 // GOOGLE DRIVE
 // ═══════════════════════════════════════
@@ -489,7 +489,7 @@ async function syncNow(){ if(!D.settings.driveId){toast('Drive non configure - v
 function openDriveModal(){ document.getElementById('driveCID').value=D.settings.driveId||''; document.getElementById('driveModal').style.display='flex'; }
 function closeDriveModal(){ document.getElementById('driveModal').style.display='none'; }
 async function saveDriveConfig(){ const cid=document.getElementById('driveCID').value.trim(); if(!cid) return; D.settings.driveId=cid; saveLocal(); closeDriveModal(); toast('Connexion...'); try{ await driveConn(); const ok=await driveRead(); if(ok){applyDark();renderAll();} toast('Drive connect\u00e9 \u2713'); }catch(e){ toast('Erreur - v\u00e9rifie ton Client ID'); } }
-
+ 
 // ═══════════════════════════════════════
 // NAVIGATION
 // ═══════════════════════════════════════
@@ -505,7 +505,7 @@ function goTab(t){
 }
 function selYear(y){ ST.y=parseInt(y); renderAll(); }
 function selMonth(m){ ST.m=m; renderNav(); renderBudget(); }
-
+ 
 // ═══════════════════════════════════════
 // RENDER NAV
 // ═══════════════════════════════════════
@@ -526,13 +526,13 @@ function renderNav(){
   db.style.display=(!hasData(ST.y,ST.m)&&hasData(pm.y,pm.m))?'block':'none';
   db.textContent=`Copier depuis ${mfr(pm.m)} ${pm.y}`;
 }
-
+ 
 // ═══════════════════════════════════════
 // RENDER BUDGET
 // ═══════════════════════════════════════
 function renderBudget(){
   const d=getM(ST.y,ST.m);
-  const rv=sum(d.rev),rc=sum(d.chg),ri=sum(d.inv),rst=rv-ri;
+  const rv=sum(d.rev),rc=sum(d.chg),ri=sum(d.inv),rst=rv-rc-ri;
   const pm=prevM(ST.y,ST.m);
   const pd=D.months[mk(pm.y,pm.m)]||{rev:[],chg:[],inv:[]};
   const prv=sum(pd.rev),prc=sum(pd.chg),prst=sum(pd.rev)-sum(pd.inv);
@@ -559,7 +559,7 @@ function renderBudget(){
       <div class="bil g"><span>Reste \u00e0 vivre</span><span>${fmtT(rst)}</span></div>
     </div>`;
 }
-
+ 
 function buildRow(r,i,sec){
   const rec=sec==='chg'&&D.settings.recurring.includes(r.l);
   const lim=sec==='chg'&&D.settings.limits.items[r.l];
@@ -579,14 +579,14 @@ function buildRow(r,i,sec){
     </div>
   </div>`;
 }
-
+ 
 function renderSec(elId,rows,sec,title,total){
   let h=`<div class="sec"><div class="sech"><div class="sech-l"><span class="sec-lbl">${title}</span></div><div class="sech-r"><button class="addbtn" data-sec="${sec}" onclick="openAddLine(this.dataset.sec)">+</button></div></div>`;
   rows.forEach((r,i)=>h+=buildRow(r,i,sec));
   h+=`<div class="sec-tot"><span>Total</span><span>${fmtT(total)}</span></div></div>`;
   document.getElementById(elId).innerHTML=h;
 }
-
+ 
 function renderChgSec(rows,total){
   const grouped=ST.chgView==='cat';
   let h=`<div class="sec"><div class="sech"><div class="sech-l"><span class="sec-lbl">Charges</span></div><div class="sech-r"><button class="vtog${grouped?' on':''}" onclick="toggleChgView()">${grouped?'Par liste':'Par cat.'}</button><button class="addbtn" onclick="openAddLine('chg')">+</button></div></div>`;
@@ -610,7 +610,7 @@ function renderChgSec(rows,total){
 function toggleChgView(){ ST.chgView=ST.chgView==='list'?'cat':'list'; renderBudget(); }
 function toggleRec(el){ const lbl=getM(ST.y,ST.m).chg[el.dataset.idx].l; const rec=D.settings.recurring; const i=rec.indexOf(lbl); if(i>=0) rec.splice(i,1); else rec.push(lbl); scheduleSave(); renderBudget(); }
 function dupMonth(){ const pm=prevM(ST.y,ST.m); const src=D.months[mk(pm.y,pm.m)]; if(!src) return; const dst=getM(ST.y,ST.m); dst.rev=src.rev.map(r=>({...r})); dst.chg=src.chg.map(r=>({...r})); dst.inv=src.inv.map(r=>({...r})); scheduleSave(); renderBudget(); renderNav(); toast(`Copi\u00e9 depuis ${mfr(pm.m)} ${pm.y}`); }
-
+ 
 // ═══════════════════════════════════════
 // RENDER STATS
 // ═══════════════════════════════════════
@@ -621,7 +621,7 @@ function renderStats(){
   let ch='';
   c3.forEach((x,idx)=>{
     const cd=D.months[mk(x.y,x.m)]||{rev:[],chg:[],inv:[]};
-    const rv=sum(cd.rev),rc=sum(cd.chg),rst=rv-sum(cd.inv);
+    const rv=sum(cd.rev),rc=sum(cd.chg),rst=rv-sum(cd.chg)-sum(cd.inv);
     const cur=x.y===ST.y&&x.m===ST.m;
     let trend='';
     if(idx>0){ const pd=D.months[mk(c3[idx-1].y,c3[idx-1].m)]||{rev:[],chg:[],inv:[]}; const prst=sum(pd.rev)-sum(pd.inv); if(prst&&rst) trend=' '+(rst>=prst?'\u2191':'\u2193'); }
@@ -659,7 +659,7 @@ function renderStats(){
   if(barChart) barChart.destroy();
   barChart=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Revenus',data:revD,backgroundColor:gc+'55',borderColor:gc,borderWidth:1.5,borderRadius:4},{label:'Charges',data:chgD,backgroundColor:rc+'44',borderColor:rc,borderWidth:1.5,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:tc,font:{size:10},boxWidth:10,padding:12}},tooltip:{callbacks:{label:c=>` ${fmtT(c.raw)}`}}},scales:{x:{grid:{color:grid},ticks:{color:tc,font:{size:10}}},y:{grid:{color:grid},ticks:{color:tc,font:{size:10},callback:v=>fmtT(v)}}}}});
 }
-
+ 
 // ═══════════════════════════════════════
 // RENDER GOALS
 // ═══════════════════════════════════════
@@ -683,7 +683,7 @@ function renderGoals(){
   document.getElementById('ruleBox').innerHTML=`<div class="rule-card"><div class="rule-t">R\u00e8gle 50 \u00b7 20 \u00b7 30</div><div class="rule-row"><span class="rule-l">Besoins 50%</span><div class="rule-tr"><div class="rule-f" style="width:${bp}%;background:var(--blue)"></div></div><span class="rule-p ${rc2(bp,50)}">${bp}%</span></div><div class="rule-row"><span class="rule-l">Epargne 30%</span><div class="rule-tr"><div class="rule-f" style="width:${sp}%;background:var(--g)"></div></div><span class="rule-p ${rc2(100-sp,70)}">${sp}%</span></div><div class="rule-row"><span class="rule-l">Envies 20%</span><div class="rule-tr"><div class="rule-f" style="width:${ep}%;background:var(--amber)"></div></div><span class="rule-p ${rc2(ep,20)}">${ep}%</span></div></div>`;
 }
 function delGoal(idx){ D.settings.goals.splice(parseInt(idx),1); scheduleSave(); renderGoals(); toast('Objectif supprim\u00e9'); }
-
+ 
 // ═══════════════════════════════════════
 // RENDER SETTINGS
 // ═══════════════════════════════════════
@@ -709,7 +709,7 @@ function renderSettings(){
 }
 function toggleShowCur(){ D.settings.showCur=D.settings.showCur===false?true:false; scheduleSave(); renderSettings(); renderBudget(); }
 function toggleRecLbl(lbl){ const rec=D.settings.recurring; const i=rec.indexOf(lbl); if(i>=0) rec.splice(i,1); else rec.push(lbl); scheduleSave(); renderSettings(); if(ST.tab==='budget') renderBudget(); }
-
+ 
 // ═══════════════════════════════════════
 // LINE MODAL
 // ═══════════════════════════════════════
@@ -758,7 +758,7 @@ function confirmLine(){
   }
   scheduleSave(); closeLine(); renderBudget(); renderNav(); toast(`"${l}" ${lineCtx.mode==='edit'?'modifi\u00e9':'ajout\u00e9'}`);
 }
-
+ 
 // ═══════════════════════════════════════
 // DEL MODAL
 // ═══════════════════════════════════════
@@ -781,7 +781,7 @@ function confirmDel(){
   document.querySelectorAll('#delList input:checked').forEach(cb=>{ const md=D.months[mk(parseInt(cb.dataset.y),cb.dataset.m)]; if(md?.[delCtx.sec]){const i=md[delCtx.sec].findIndex(r=>r.l===delCtx.lbl);if(i>=0)md[delCtx.sec].splice(i,1);} });
   scheduleSave(); closeDel(); renderBudget(); renderNav(); toast(`"${delCtx.lbl}" supprim\u00e9`);
 }
-
+ 
 // ═══════════════════════════════════════
 // GOAL MODAL
 // ═══════════════════════════════════════
@@ -805,19 +805,19 @@ function confirmGoal(){
   if(goalCtx.idx>=0) D.settings.goals[goalCtx.idx]=g; else D.settings.goals.push(g);
   scheduleSave(); closeGoal(); renderGoals(); toast(`"${n}" enregistr\u00e9`);
 }
-
+ 
 // ═══════════════════════════════════════
 // LIMIT MODAL
 // ═══════════════════════════════════════
 function openLim(type,name){ limCtx={type,name}; document.getElementById('limMT').textContent='Plafond - '+name; const cur=type==='item'?D.settings.limits.items[name]:D.settings.limits.cats[name]; document.getElementById('limV').value=cur||''; document.getElementById('limModal').style.display='flex'; setTimeout(()=>document.getElementById('limV').focus(),80); }
 function closeLim(){ document.getElementById('limModal').style.display='none'; }
 function confirmLim(){ const v=parseFloat(document.getElementById('limV').value)||0; if(limCtx.type==='item') D.settings.limits.items[limCtx.name]=v; else D.settings.limits.cats[limCtx.name]=v; scheduleSave(); closeLim(); renderSettings(); renderBudget(); toast('Plafond enregistr\u00e9'); }
-
+ 
 // ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
 function renderAll(){ renderNav(); renderBudget(); }
-
+ 
 function init(){
   initData();
   if(!loadLocal()) saveLocal();
@@ -827,7 +827,7 @@ function init(){
     setTimeout(async()=>{ try{ await driveConn(); const ok=await driveRead(); if(ok){applyDark();renderAll();} }catch(e){} },800);
   }
 }
-
+ 
 init();
 </script>
 </body>
