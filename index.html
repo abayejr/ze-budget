@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ZE BUDGET">
@@ -47,39 +47,49 @@
 html,body{height:100%;background:var(--bg);color:var(--t);font-family:var(--font);overscroll-behavior:none;transition:background .2s,color .2s}
 body{display:flex;flex-direction:column;max-width:430px;margin:0 auto;min-height:100%}
 /* RESTE À VIVRE HEADER */
-.nav-reste-wrap{margin-bottom:6px}
-.nav-reste-lbl{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
-.nav-reste-val{font-size:30px;font-weight:700;font-family:var(--mono);color:var(--g);letter-spacing:-.04em;line-height:1;margin-bottom:2px}
+.nav-reste-wrap{margin-bottom:4px}
+.nav-reste-lbl{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1px}
+.nav-reste-val{font-size:24px;font-weight:700;font-family:var(--mono);color:var(--g);letter-spacing:-.04em;line-height:1.1;margin-bottom:1px}
 .nav-reste-val.neg{color:var(--red)}
-.nav-month{font-size:12px;color:var(--t3);margin-bottom:0}
+.nav-month{font-size:11px;color:var(--t3);margin-bottom:0}
+
+/* ── App + tabs centrés, s'adaptent à toute largeur */
+.app{width:100%;max-width:430px;margin:0 auto}
+.tabs{width:100%;max-width:430px;left:50%;transform:translateX(-50%)}
 
 /* RESPONSIVE ─ Tablet portrait ≥ 600px */
 @media(min-width:600px){
   .app{max-width:600px}
   .tabs{max-width:600px}
-  .nav-reste-val{font-size:36px}
+  .nav-reste-val{font-size:28px}
   .main{padding:14px 20px calc(var(--safe-b)+72px)}
   .topnav{padding:calc(var(--safe-t)+12px) 20px 10px}
   .mstrip{padding:0 18px}
-  .ri-name{font-size:14px}
-  .ri-amt{font-size:14px}
+  .ri-name{font-size:13px}
+  .ri-amt{font-size:13px}
   .kpis{gap:8px}
-  .kv{font-size:20px}
 }
 
 /* RESPONSIVE ─ iPad landscape + PC ≥ 900px */
 @media(min-width:900px){
-  .app{max-width:860px}
-  .tabs{max-width:860px}
-  .nav-reste-val{font-size:40px}
+  .app{max-width:900px}
+  .tabs{max-width:900px}
+  .nav-reste-val{font-size:32px}
   .topnav{padding:calc(var(--safe-t)+14px) 28px 12px}
   .mstrip{padding:0 24px}
   .main{padding:16px 28px calc(var(--safe-b)+72px)}
   .kpis{grid-template-columns:repeat(4,1fr)}
   .sec{margin-bottom:10px}
   .ri{padding:10px 14px}
-  .ri-name{font-size:14px}
-  .ri-amt{font-size:14px}
+}
+
+/* RESPONSIVE ─ Large desktop ≥ 1200px */
+@media(min-width:1200px){
+  .app{max-width:1100px}
+  .tabs{max-width:1100px}
+  .nav-reste-val{font-size:36px}
+  .kpis{grid-template-columns:repeat(4,1fr)}
+  .main{padding:20px 40px calc(var(--safe-b)+72px)}
 }
 
 /* NAV */
