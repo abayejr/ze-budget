@@ -64,7 +64,7 @@ body{display:flex;flex-direction:column;max-width:430px;margin:0 auto;min-height
   .nav-reste-val{font-size:28px}
   .topnav{padding:max(54px,env(safe-area-inset-top,0px)) 28px 12px}
   .mstrip{padding:0 24px}
-  .main{padding:16px 24px calc(env(safe-area-inset-bottom,0px)+72px)}
+  .main{padding:16px 24px calc(env(safe-area-inset-bottom,0px)+140px)}
   .kpis{grid-template-columns:repeat(4,1fr);gap:10px}
   .ri-name{font-size:14px}
   .ri-amt{font-size:14px}
@@ -78,7 +78,7 @@ body{display:flex;flex-direction:column;max-width:430px;margin:0 auto;min-height
   .nav-reste-val{font-size:32px}
   .topnav{padding:max(54px,env(safe-area-inset-top,0px)) 36px 14px}
   .mstrip{padding:0 32px}
-  .main{padding:20px 36px calc(env(safe-area-inset-bottom,0px)+72px)}
+  .main{padding:20px 36px calc(env(safe-area-inset-bottom,0px)+140px)}
   .kpis{grid-template-columns:repeat(4,1fr)}
 }
 
@@ -113,7 +113,7 @@ body{display:flex;flex-direction:column;max-width:430px;margin:0 auto;min-height
 .mp.on{color:var(--t);border-bottom-color:var(--g)}
 .mdot{position:absolute;top:5px;right:2px;width:4px;height:4px;border-radius:50%;background:var(--g)}
 /* MAIN */
-.main{flex:1;overflow-y:auto;padding:12px 13px calc(var(--safe-b)+72px)}
+.main{flex:1;overflow-y:auto;padding:12px 13px calc(var(--safe-b)+140px)}
 .view{display:none}.view.on{display:block}
 /* KPI */
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
@@ -214,7 +214,7 @@ body{display:flex;flex-direction:column;max-width:430px;margin:0 auto;min-height
 .rule-p{font-size:10px;font-family:var(--mono);font-weight:600;width:32px;text-align:right}
 .rule-p.ok{color:var(--g)}.rule-p.warn{color:var(--amber)}.rule-p.bad{color:var(--red)}
 /* SETTINGS */
-.sg{background:var(--c1);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;margin-bottom:8px}
+.sg{background:var(--c1);border:1px solid var(--brd);border-radius:var(--r);overflow:hidden;margin-bottom:8px}.sg:last-child{margin-bottom:24px}
 .sg-t{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;padding:7px 12px;border-bottom:1px solid var(--brd);background:var(--c2)}
 .sr{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--brd);gap:8px}
 .sr:last-child{border-bottom:none}
@@ -232,7 +232,7 @@ body{display:flex;flex-direction:column;max-width:430px;margin:0 auto;min-height
 .tab.on svg{opacity:1;color:var(--g)}.tab.on span{color:var(--g)}
 /* MODALS */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--c1);border-radius:22px 22px 0 0;padding:18px 18px calc(var(--safe-b)+18px);width:100%;max-width:430px;animation:su .22s ease}
+.sheet{background:var(--c1);border-radius:22px 22px 0 0;padding:18px 18px calc(var(--safe-b)+18px);width:100%;max-width:430px;max-height:85vh;overflow-y:auto;animation:su .22s ease}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .sh{width:32px;height:4px;border-radius:2px;background:var(--brd2);margin:0 auto 14px}
 .sheet h3{font-size:15px;font-weight:600;color:var(--t);margin-bottom:14px;letter-spacing:-.02em}
@@ -396,25 +396,26 @@ body{display:flex;flex-direction:column;max-width:430px;margin:0 auto;min-height
     </div>
   </div>
 </div>
-<!-- DRIVE MODAL -->
-<div class="ov" id="driveModal" style="display:none" onclick="if(event.target===this)closeDriveModal()">
+<!-- SYNC MODAL -->
+<div class="ov-bg" id="driveModal" style="display:none" onclick="if(event.target===this)closeDriveModal()">
   <div class="sheet">
-    <div class="sh"></div>
-    <h3>Connecter Google Drive</h3>
-    <div class="dstep"><div class="dnum">1</div><div class="dtxt">Va sur console.cloud.google.com et cree un projet "ZE BUDGET"</div></div>
-    <div class="dstep"><div class="dnum">2</div><div class="dtxt">Active Google Drive API dans "API et services"</div></div>
-    <div class="dstep"><div class="dnum">3</div><div class="dtxt">Cree un ID client OAuth 2.0 > Application Web > ajoute https://abayejr.github.io comme origine autorisee</div></div>
-    <div class="dstep"><div class="dnum">4</div><div class="dtxt">Dans Audience > ajoute ton email comme utilisateur test</div></div>
-    <label class="fl" style="margin-top:8px">Client ID</label>
-    <input class="fi" id="driveCID" placeholder="XXXX.apps.googleusercontent.com" autocomplete="off">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div class="sh" style="margin:0"></div>
+      <button onclick="closeDriveModal()" style="background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer;padding:0 4px;line-height:1">&times;</button>
+    </div>
+    <h3 style="margin-bottom:14px">Synchronisation GitHub Gist</h3>
+    <p style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.6">Tes données sont synchronisées via un Gist privé GitHub. La sync est automatique à chaque modification.</p>
+    <label class="fl">GitHub Personal Access Token</label>
+    <input class="fi" type="password" id="gistToken" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+    <label class="fl">Gist ID</label>
+    <input class="fi" id="gistId" placeholder="01e9465e2b61386d775855ab3ae4a870" autocomplete="off">
     <div class="btns">
-      <button class="btn-c" onclick="closeDriveModal()">Plus tard</button>
-      <button class="btn-ok" onclick="saveDriveConfig()">Connecter</button>
+      <button class="btn-c" onclick="closeDriveModal()">Annuler</button>
+      <button class="btn-ok" onclick="saveDriveConfig()">Enregistrer</button>
     </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
-<script src="https://accounts.google.com/gsi/client" async></script>
 <script>
 // ═══════════════════════════════════════
 // CONSTANTS & STATE
@@ -506,7 +507,7 @@ function loadLocal(){
   }catch(e){}
   return false;
 }
-function scheduleSave(){ clearTimeout(saveTimer); saveTimer=setTimeout(()=>{saveLocal();driveWrite();},1500); }
+function scheduleSave(){ clearTimeout(saveTimer); saveTimer=setTimeout(()=>{saveLocal();gistWrite();},1500); }
 
 // ═══════════════════════════════════════
 // DARK MODE
@@ -517,28 +518,87 @@ function toggleDark(){ const c=D.settings.dark||'auto'; D.settings.dark=c==='aut
 // ═══════════════════════════════════════
 // GOOGLE DRIVE
 // ═══════════════════════════════════════
-async function driveConn(){
-  const cid=D.settings.driveId; if(!cid) return false;
-  return new Promise((res,rej)=>{
-    try{ const cl=google.accounts.oauth2.initTokenClient({client_id:cid,scope:'https://www.googleapis.com/auth/drive.appdata',callback:(r)=>{ if(r.error){rej(r.error);return;} gTok=r.access_token; setSt('ok'); res(true); }}); cl.requestAccessToken({prompt:''}); }
-    catch(e){ rej(e); }
-  });
+// ════════════════════════════════
+// GITHUB GIST SYNC
+// Sync instantanée, zéro popup, zéro expiration
+// ════════════════════════════════
+const GIST_API = 'https://api.github.com/gists/';
+
+function getGistCfg(){
+  return {
+    token: D.settings.gistToken || '',
+    id:    D.settings.gistId    || ''
+  };
 }
-async function driveWrite(){
-  if(!gTok) return;
-  try{ setSt('sp'); const blob=new Blob([JSON.stringify(D)],{type:'application/json'}); const sr=await fetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name%3D'ze-budget.json'",{headers:{Authorization:'Bearer '+gTok}}); const res=await sr.json(); if(res.files?.length>0){ await fetch('https://www.googleapis.com/upload/drive/v3/files/'+res.files[0].id+'?uploadType=media',{method:'PATCH',headers:{Authorization:'Bearer '+gTok,'Content-Type':'application/json'},body:blob}); } else { const meta=JSON.stringify({name:'ze-budget.json',parents:['appDataFolder']}); const form=new FormData(); form.append('metadata',new Blob([meta],{type:'application/json'})); form.append('file',blob); await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:{Authorization:'Bearer '+gTok},body:form}); } setSt('ok'); }
-  catch(e){ setSt(''); }
+function setSyncSt(s){
+  const dot=document.getElementById('sdot');
+  const txt=document.getElementById('syncTxt');
+  if(!dot||!txt) return;
+  dot.className='sdot'+(s==='ok'?' ok':s==='sp'?' sp':'');
+  txt.textContent=s==='ok'?'Syncé ✓':s==='sp'?'Sync...':'Local';
 }
-async function driveRead(){
-  if(!gTok) return false;
-  try{ setSt('sp'); const sr=await fetch("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name%3D'ze-budget.json'",{headers:{Authorization:'Bearer '+gTok}}); const res=await sr.json(); if(!res.files?.length){setSt('ok');return false;} const dl=await fetch('https://www.googleapis.com/drive/v3/files/'+res.files[0].id+'?alt=media',{headers:{Authorization:'Bearer '+gTok}}); const p=await dl.json(); if(p?.months&&p?.settings){D=p;setSt('ok');return true;} }
-  catch(e){ setSt(''); }
+async function gistWrite(){
+  const {token,id}=getGistCfg();
+  if(!token||!id){setSyncSt('');return;}
+  try{
+    setSyncSt('sp');
+    const r=await fetch(GIST_API+id,{
+      method:'PATCH',
+      headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+      body:JSON.stringify({files:{'ze-budget.json':{content:JSON.stringify(D)}}})
+    });
+    if(r.ok) setSyncSt('ok'); else setSyncSt('');
+  }catch(e){setSyncSt('');}
+}
+async function gistRead(){
+  const {token,id}=getGistCfg();
+  if(!token||!id) return false;
+  try{
+    setSyncSt('sp');
+    const r=await fetch(GIST_API+id,{
+      headers:{'Authorization':'token '+token}
+    });
+    if(!r.ok){setSyncSt('');return false;}
+    const j=await r.json();
+    const raw=j.files?.['ze-budget.json']?.content;
+    if(!raw){setSyncSt('ok');return false;}
+    const p=JSON.parse(raw);
+    if(p?.months&&p?.settings){
+      // Garder le gistToken et gistId locaux si absents dans le cloud
+      if(!p.settings.gistToken) p.settings.gistToken=D.settings.gistToken;
+      if(!p.settings.gistId)    p.settings.gistId=D.settings.gistId;
+      D=p; setSyncSt('ok'); return true;
+    }
+  }catch(e){setSyncSt('');}
   return false;
 }
-async function syncNow(){ if(!D.settings.driveId){toast('Drive non configure - voir Reglages');return;} try{ await driveConn(); const ok=await driveRead(); if(ok){applyDark();renderAll();toast('Synchronise \u2713');} }catch(e){toast('Erreur sync');} }
-function openDriveModal(){ document.getElementById('driveCID').value=D.settings.driveId||''; document.getElementById('driveModal').style.display='flex'; }
-function closeDriveModal(){ document.getElementById('driveModal').style.display='none'; }
-async function saveDriveConfig(){ const cid=document.getElementById('driveCID').value.trim(); if(!cid) return; D.settings.driveId=cid; saveLocal(); closeDriveModal(); toast('Connexion...'); try{ await driveConn(); const ok=await driveRead(); if(ok){applyDark();renderAll();} toast('Drive connect\u00e9 \u2713'); }catch(e){ toast('Erreur - v\u00e9rifie ton Client ID'); } }
+async function syncNow(){
+  const {token,id}=getGistCfg();
+  if(!token||!id){toast('Réglages → Sync pour configurer');return;}
+  const ok=await gistRead();
+  if(ok){applyDark();renderAll();toast('Synchronisé ✓');}
+  else toast('Erreur sync — vérifie le token');
+}
+function openDriveModal(){
+  document.getElementById('gistToken').value=D.settings.gistToken||'';
+  document.getElementById('gistId').value=D.settings.gistId||'';
+  document.getElementById('driveModal').style.display='flex';
+}
+function closeDriveModal(){document.getElementById('driveModal').style.display='none';}
+function saveDriveConfig(){
+  const token=document.getElementById('gistToken').value.trim();
+  const id=document.getElementById('gistId').value.trim();
+  if(!token||!id){toast('Token et ID requis');return;}
+  D.settings.gistToken=token;
+  D.settings.gistId=id;
+  saveLocal();
+  closeDriveModal();
+  toast('Sync configurée — test en cours...');
+  gistRead().then(ok=>{
+    if(ok){applyDark();renderAll();toast('Connecté ✓ Données chargées');}
+    else gistWrite().then(()=>toast('Connecté ✓'));
+  });
+}
 
 // ═══════════════════════════════════════
 // NAVIGATION
@@ -749,7 +809,6 @@ function renderSettings(){
   d.chg.forEach(r=>{ const lim=s.limits.items[r.l]; itmH+=`<div class="sr"><div class="sr-l"><div class="sr-n">${r.l}</div><div class="sr-s">${r.cat||'Autre'}</div></div><span class="lim-tag" data-type="item" data-name="${r.l}" onclick="openLim(this.dataset.type,this.dataset.name)">${lim?fmtT(lim):'+ Ajouter'}</span></div>`; });
   let catH='';
   s.catOrder.forEach(c=>{ const lim=s.limits.cats[c]; catH+=`<div class="sr"><div class="sr-l"><div class="sr-n">${c}</div></div><span class="lim-tag" data-type="cat" data-name="${c}" onclick="openLim(this.dataset.type,this.dataset.name)">${lim?fmtT(lim):'+ Ajouter'}</span></div>`; });
-  const conn=gTok&&s.driveId;
   const thL=s.dark==='dark'?'Sombre':s.dark==='light'?'Clair':'Auto';
   document.getElementById('settBox').innerHTML=
     `<div class="sg"><div class="sg-t">Affichage</div>
@@ -758,8 +817,8 @@ function renderSettings(){
     <div class="sg"><div class="sg-t">Charges r\u00e9currentes</div>${recH||'<div class="sr"><div class="sr-n" style="color:var(--t3)">Aucune charge ce mois</div></div>'}</div>
     <div class="sg"><div class="sg-t">Plafonds par poste</div>${itmH||'<div class="sr"><div class="sr-n" style="color:var(--t3)">Aucune charge</div></div>'}</div>
     <div class="sg"><div class="sg-t">Plafonds par cat\u00e9gorie</div>${catH}</div>
-    <div class="sg"><div class="sg-t">Synchronisation</div>
-    <div class="sr"><div class="sr-l"><div class="sr-n">Google Drive</div><div class="sr-s">${conn?'Connect\u00e9':'Non configur\u00e9'}</div></div><button class="tog${conn?' on':''}" onclick="openDriveModal()"></button></div></div>`;
+    <div class="sg"><div class="sg-t">Synchronisation GitHub Gist</div>
+    <div class="sr"><div class="sr-l"><div class="sr-n">Sync multi-appareils</div><div class="sr-s">${D.settings.gistToken?'Connect\u00e9':'Non configur\u00e9'}</div></div><button class="tog${D.settings.gistToken?' on':''}" onclick="openDriveModal()"></button></div></div>`;
 }
 function toggleShowCur(){ D.settings.showCur=D.settings.showCur===false?true:false; scheduleSave(); renderSettings(); renderBudget(); }
 function toggleRecLbl(lbl){ const rec=D.settings.recurring; const i=rec.indexOf(lbl); if(i>=0) rec.splice(i,1); else rec.push(lbl); scheduleSave(); renderSettings(); if(ST.tab==='budget') renderBudget(); }
@@ -877,8 +936,11 @@ function init(){
   if(!loadLocal()) saveLocal();
   applyDark();
   renderAll();
-  if(D.settings.driveId){
-    setTimeout(async()=>{ try{ await driveConn(); const ok=await driveRead(); if(ok){applyDark();renderAll();} }catch(e){} },800);
+  if(D.settings.gistToken&&D.settings.gistId){
+    setTimeout(async()=>{
+      const ok=await gistRead();
+      if(ok){applyDark();renderAll();}
+    },500);
   }
 }
 
